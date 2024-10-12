@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Rapport d'Audit Web - Bone Brocker</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2, h3 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .section { margin-bottom: 40px; }
+        pre { background-color: #f8f8f8; padding: 10px; border: 1px solid #ddd; overflow: auto; }
+        img { max-width: 100%; height: auto; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Rapport d'Audit Web</h1>
+    <div class="section">
+        <h2>Informations Générales</h2>
+        <table>
+            <tr><th>URL Audité</th><td>{{ audit_info.url }}</td></tr>
+            <tr><th>Navigateur</th><td>{{ audit_info.browser }}</td></tr>
+            <tr><th>Mode</th><td>{{ audit_info.mode }}</td></tr>
+            <tr><th>Émulation Mobile</th><td>{{ audit_info.mobile }}</td></tr>
+            <tr><th>Date et Heure</th><td>{{ audit_info.timestamp }}</td></tr>
+            <tr><th>Interactions</th><td>{{ audit_info.interactions }}</td></tr>
+        </table>
+    </div>
+    
+    <div class="section">
+        <h2>Technologies Détectées</h2>
+        {% if audit_info.technologies_detected %}
+        <table>
+            <tr>
+                <th>Technologie</th>
+                <th>Version</th>
+            </tr>
+            {% for tech, version in audit_info.technologies_detected.items() %}
+            <tr>
+                <td>{{ tech }}</td>
+                <td>{{ version }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>Aucune technologie détectée.</p>
+        {% endif %}
+    </div>
+    
+    <div class="section">
+        <h2>Requêtes HTTP/HTTPS Capturées</h2>
+        {% if requests %}
+        <table>
+            <tr>
+                <th>URL</th>
+                <th>Méthode</th>
+                <th>Status Code</th>
+                <th>Cookies</th>
+            </tr>
+            {% for request in requests %}
+            <tr>
+                <td><a href="{{ request.url }}" target="_blank">{{ request.url }}</a></td>
+                <td>{{ request.method }}</td>
+                <td>{{ request.status_code }}</td>
+                <td>{{ request.cookies }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>Aucune requête capturée.</p>
+        {% endif %}
+    </div>
+    
+    <div class="section">
+        <h2>Analyse du DOM</h2>
+        <h3>Contenu HTML</h3>
+        <pre>{{ dom_analysis.html_content }}</pre>
+        <h3>Technologies Utilisées</h3>
+        {% if dom_analysis.technologies %}
+        <table>
+            <tr>
+                <th>Technologie</th>
+                <th>Version</th>
+            </tr>
+            {% for tech, version in dom_analysis.technologies.items() %}
+            <tr>
+                <td>{{ tech }}</td>
+                <td>{{ version }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>Aucune technologie détectée dans le DOM.</p>
+        {% endif %}
+    </div>
+    
+    <div class="section">
+        <h2>Visualisations</h2>
+        
+        {% if charts.technologies_chart %}
+        <h3>Technologies Détectées</h3>
+        <img src="{{ charts.technologies_chart }}" alt="Technologies Détectées">
+        {% endif %}
+        
+        {% if charts.status_chart %}
+        <h3>Répartition des Statuts HTTP</h3>
+        <img src="{{ charts.status_chart }}" alt="Répartition des Statuts HTTP">
+        {% endif %}
+        
+        {% if charts.methods_chart %}
+        <h3>Répartition des Méthodes HTTP</h3>
+        <img src="{{ charts.methods_chart }}" alt="Répartition des Méthodes HTTP">
+        {% endif %}
+    </div>
+</body>
+</html>
